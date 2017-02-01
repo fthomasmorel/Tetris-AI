@@ -11,7 +11,7 @@ cell_size =    18
 cols =        10
 rows =        22
 maxfps =     30
-time =     2000
+time =     25
 maxPiece = 500
 
 colors = [

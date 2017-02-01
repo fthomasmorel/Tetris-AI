@@ -56,6 +56,6 @@ class Ai:
                 moves.append("RIGHT")
             else:
                 moves.append("LEFT")
-        moves.append('RETURN')
+        #moves.append('RETURN')
         parent.executes_moves(moves)
         #return moves

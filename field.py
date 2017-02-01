@@ -43,42 +43,6 @@ class Field:
     def undo(self, workingPieceIndex):
         self.field = [[0 if el == -workingPieceIndex else el for el in row] for row in self.field]
 
-        # for offsetY in reversed(range(0, self.height-len(piece)+1)):
-        #     possible = True
-        #     tmp = copy.deepcopy(self.field)
-        #     for x in range(0, len(piece[0])):
-        #         for y in range(0, len(piece)):
-        #             value = piece[y][x]
-        #             if value > 0 and tmp[offsetY+y][offsetX+x] > 0:
-        #                 possible = False
-        #                 break
-        #             elif value > 0:
-        #                 columnRest = tmp[x][0:offsetY-len(piece)]
-        #                 if len([e for e in columnRest if e > 0]) > 0:
-        #                     possible = False
-        #                     break
-        #                 tmp[offsetY+y][offsetX+x] = value
-        #         if not possible:
-        #             break
-        #     if possible:
-        #         return tmp
-        # return None
-
-
-        # field = self.field
-        # offsetY = 0
-        # for x in range(offsetX, offsetX+len(piece[0])):
-        #     offsetY = max(offsetY, self.heightForColumn(x))
-        #
-        # offsetY = self.height-offsetY
-        #
-        # for x in range(0, len(piece[0])):
-        #     for y in range(0, len(piece)):
-        #         value = piece[y][x]
-        #         if value > 0 :
-        #             field[y+offsetY-len(piece)][x+offsetX] = value
-        # return field
-
     def heightForColumn(self, column):
         width, height = self.size()
         for i in range(0, height):
@@ -117,8 +81,6 @@ class Field:
         heights = self.heights()
         maxColumn = self.maxHeightColumns(heights)
         return heights + [self.aggregateHeight(heights)] + self.numberOfHoles(heights) + self.bumpinesses(heights) + [self.completLine(), self.maxPitDepth(heights), self.maxHeightColumns(heights), self.minHeightColumns(heights)]
-        #return [self.aggregateHeight(heights), self.completLine(), self.bumpiness(heights), self.numberOfHole(heights)]#, self.maxHeightColumns(heights), self.maximumHoleHeight(heights), self.rowsWithHoles(maxColumn), self.maxPitDepth(heights)]
-        #return heights + [self.aggregateHeight(heights), self.completLine(), self.bumpiness(heights), self.numberOfHole(heights), self.maxHeightColumns(heights), self.maximumHoleHeight(heights), self.rowsWithHoles(maxColumn), self.maxPitDepth(heights)]
 
     def aggregateHeight(self, heights):
         result = sum(heights)

@@ -92,8 +92,10 @@ class TetrisApp(object):
         random.seed(seed)
         self.next_stone = tetris_shapes[random.randint(0, len(tetris_shapes)-1)]
         self.playWithUI = playWithUI
+        self.fast_mode = True
         if playWithUI:
             self.gui = Gui()
+            self.fast_mode = False
         self.init_game()
 
     def new_stone(self):
@@ -185,6 +187,14 @@ class TetrisApp(object):
             pygame.display.update()
         sys.exit()
 
+    def speed_up(self):
+        self.fast_mode = not self.fast_mode
+        if self.fast_mode:
+            pygame.time.set_timer(pygame.USEREVENT+1, 2000)
+            self.insta_drop()
+        else:
+            pygame.time.set_timer(pygame.USEREVENT+1, 25)
+
     def executes_moves(self, moves):
         key_actions = {
             'ESCAPE':    self.quit,
@@ -198,6 +208,9 @@ class TetrisApp(object):
         }
         for action in moves:
             key_actions[action]()
+
+        if self.fast_mode:
+            self.insta_drop()
 
 
     def run(self, weights, limitPiece):
@@ -225,16 +238,17 @@ class TetrisApp(object):
                     if event.type == pygame.USEREVENT+1:
                         self.drop(False)
                     elif event.type == pygame.QUIT:
-                        self.quit()
-                # elif event.type == pygame.KEYDOWN:
-                #     for key in key_actions:
-                #         if event.key == eval("pygame.K_"+key):
-                #             key_actions[key]()
+                            self.quit()
+                    elif event.type == pygame.KEYDOWN:
+                        if event.key == eval("pygame.K_s"):
+                            self.speed_up()
+                        elif event.key == eval("pygame.K_p"):
+                            self.toggle_pause()
 
             #dont_burn_my_cpu.tick(maxfps)
 
 
 if __name__ == '__main__':
     weights = [0.39357083734159515, -1.8961941343266449, -5.107694873375318, -3.6314963941589093, -2.9262681134021786, -2.146136640641482, -7.204192964669836, -3.476853402227247, -6.813002842291903, 4.152001386170861, -21.131715861293525, -10.181622180279133, -5.351108175564556, -2.6888972099986956, -2.684925769670947, -4.504495386829769, -7.4527302422826, -6.3489634714511505, -4.701455626343827, -10.502314845278828, 0.6969259450910086, -4.483319180395864, -2.471375907554622, -6.245643268054767, -1.899364785170105, -5.3416512085013395, -4.072687054171711, -5.936652569831475, -2.3140398163110643, -4.842883337741306, 17.677262456993276, -4.42668539845469, -6.8954976464473585, 4.481308299774875] #21755 lignes
-    result = TetrisApp(True, 4).run(weights, 200)
+    result = TetrisApp(True, 4).run(weights, -1)
     print(result)
